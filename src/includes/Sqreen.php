@@ -15,6 +15,7 @@ if (!class_exists('Sqreen_Plugin')) {
             $this->dir = $dir;
             $this->hook_plugin();
             $this->hook_user_monitoring();
+            $this->hook_custom_events();
         }
 
         protected function __clone()
@@ -48,7 +49,7 @@ if (!class_exists('Sqreen_Plugin')) {
          */
         public static function isSDKAvailable()
         {
-            return function_exists('sqreen\auth_track') && function_exists('sqreen\signup_track');
+            return function_exists('sqreen\auth_track') && function_exists('sqreen\signup_track') && function_exists('sqreen\identify') && function_exists('sqreen\track');
         }
 
         public function onPluginActivated()
@@ -94,6 +95,34 @@ if (!class_exists('Sqreen_Plugin')) {
             if ($user) {
                 sqreen\signup_track(['username' => $user->user_login]);
             }
+        }
+
+        protected function hook_custom_events()
+        {
+            add_action('init', array(Sqreen_Plugin, 'identify'));
+            add_action('admin_init', array(Sqreen_Plugin, 'onAdminAccess'));
+        }
+
+        public function identify()
+        {
+            if (!self::isSDKAvailable()) {
+                return false;
+            }
+
+            $current_user = wp_get_current_user();
+            if ($current_user->ID !== 0) {
+                sqreen\identify(['username' => $current_user->user_login]);
+            }
+        }
+
+        public function onAdminAccess()
+        {
+
+            if (!self::isSDKAvailable()) {
+                return false;
+            }
+
+            sqreen\track('admin_init');
         }
     }
 }
