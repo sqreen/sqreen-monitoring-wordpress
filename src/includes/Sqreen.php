@@ -41,7 +41,7 @@ if (!class_exists('Sqreen_Plugin')) {
         protected function hook_plugin()
         {
             $plugin_file = $this->dir . 'sqreen.php';
-            register_activation_hook($plugin_file, array(Sqreen_Plugin, 'onPluginActivated'));
+            register_activation_hook($plugin_file, array('Sqreen_Plugin', 'onPluginActivated'));
         }
 
         /**
@@ -62,9 +62,9 @@ if (!class_exists('Sqreen_Plugin')) {
 
         protected function hook_user_monitoring()
         {
-            add_action('wp_login', array(Sqreen_Plugin, 'onAutoLoginSuccess'));
-            add_action('wp_login_failed', array(Sqreen_Plugin, 'onAutoLoginError'));
-            add_action('user_register', array(Sqreen_Plugin, 'onAutoSignup'));
+            add_action('wp_login', array('Sqreen_Plugin', 'onAutoLoginSuccess'));
+            add_action('wp_login_failed', array('Sqreen_Plugin', 'onAutoLoginError'));
+            add_action('user_register', array('Sqreen_Plugin', 'onAutoSignup'));
         }
 
         public function onAutoLoginSuccess($username)
@@ -99,8 +99,9 @@ if (!class_exists('Sqreen_Plugin')) {
 
         protected function hook_custom_events()
         {
-            add_action('init', array(Sqreen_Plugin, 'identify'));
-            add_action('admin_init', array(Sqreen_Plugin, 'onAdminAccess'));
+            add_action('init', array('Sqreen_Plugin', 'identify'));
+            add_action('admin_init', array('Sqreen_Plugin', 'onAdminInit'));
+            add_action('password_reset', array('Sqreen_Plugin', 'onPasswordReset'));
         }
 
         public function identify()
@@ -115,14 +116,22 @@ if (!class_exists('Sqreen_Plugin')) {
             }
         }
 
-        public function onAdminAccess()
-        {
-
+        public function track($event) {
             if (!self::isSDKAvailable()) {
                 return false;
             }
 
-            sqreen\track('admin_init');
+            return sqreen\track($event);
+        }
+
+        public function onAdminInit()
+        {
+            self::track('admin_init');
+        }
+
+        public function onPasswordReset()
+        {
+            self::track('password_reset');
         }
     }
 }
