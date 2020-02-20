@@ -3,7 +3,7 @@
  * Plugin Name: Sqreen Monitoring for Wordpress
  * Plugin URI: https://sqreen.com
  * Description: Monitor and protect your Wordpress with Sqreen
- * Version: 1.0.0
+ * Version: 1.0.1
  * Author: Sqreen
  * Author URI: https://sqreen.com
  *
