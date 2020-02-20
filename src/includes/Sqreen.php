@@ -100,7 +100,8 @@ if (!class_exists('Sqreen_Plugin')) {
         protected function hook_custom_events()
         {
             add_action('init', array('Sqreen_Plugin', 'identify'));
-            add_action('admin_init', array('Sqreen_Plugin', 'onAdminAccess'));
+            add_action('admin_init', array('Sqreen_Plugin', 'onAdminInit'));
+            add_action('password_reset', array('Sqreen_Plugin', 'onPasswordReset'));
         }
 
         public function identify()
@@ -115,14 +116,22 @@ if (!class_exists('Sqreen_Plugin')) {
             }
         }
 
-        public function onAdminAccess()
-        {
-
+        public function track($event) {
             if (!self::isSDKAvailable()) {
                 return false;
             }
 
-            sqreen\track('admin_init');
+            return sqreen\track($event);
+        }
+
+        public function onAdminInit()
+        {
+            self::track('admin_init');
+        }
+
+        public function onPasswordReset()
+        {
+            self::track('password_reset');
         }
     }
 }
