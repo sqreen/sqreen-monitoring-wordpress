@@ -1,6 +1,6 @@
 # Sqreen monitoring for Wordpress
 
-Automatically monitor Wordpress with Sqreen PHP agent.
+Automatically monitor Wordpress with Sqreen PHP agent (extension & daemon based, *not* the [Wordpress agent](https://github.com/sqreen/AgentWordpress/)).
 
 These following events are automatically tracked:
 
