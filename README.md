@@ -26,8 +26,10 @@ page](https://github.com/sqreen/sqreen-monitoring-wordpress/releases),
 and upload it
 Click "Install now", then "Activate Plugin".
 
-You are all set. Wordpress should now report events to Sqreen automatically.
+You are all set: Wordpress should now report events to Sqreen automatically.
+Check it [in the Sqreen dashboard](https://my.sqreen.com).
 
+![Sqreen user monitoring](images/sqreen-users.png)
 
 ### Test the plugin
 
